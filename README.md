@@ -29,7 +29,7 @@ pip install -r requirements.txt
 2. Completar os TODOs nos arquivos:
    - `pipeline/carregar.py`
    - `pipeline/validar.py`
-   - `pipeline/treinar.py`
+   - `pipeline/treinar.py` 
 
 3. Executar o pipeline:
 ```bash
