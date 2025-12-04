@@ -2,6 +2,8 @@
 Pipeline - Etapa 3: Treinar Modelo
 """
 
+import time
+from xml.parsers.expat import model
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -23,14 +25,28 @@ def preparar_dados(df, coluna_target='respondeu_campanha'):
     # TODO 1: Crie X removendo a coluna target e cliente_id do DataFrame
     # Dica: X = df.drop(columns=[coluna_target, 'cliente_id'])
     
-    X = None  # Substitua None pelo código correto
-    
-    
     # TODO 2: Crie y extraindo apenas a coluna target
     # Dica: y = df[coluna_target]
     
-    y = None  # Substitua None pelo código correto
+    X = df.drop(columns=['respondeu_campanha', 'cliente_id'])
+    y = df['respondeu_campanha']
     
+    print("=" * 50)
+    print("CONFERIR FEATURES E TARGET")
+    print("=" * 50)
+    
+    print(f"Features (X): {X.shape[0]} linhas x {X.shape[1]} colunas")
+    # shape[0] = número de linhas, shape[1] = número de colunas
+    print(f"Target (y): {y.shape[0]} valores")
+    print()
+    
+    print("Primeiras linhas de X:")
+    print(X.head()) # head() = mostra primeiras 5 linhas
+    print()
+
+    print("Primeiros valores de y:")
+    print(y.head())
+    print()
     
     return X, y
 
@@ -54,8 +70,9 @@ def dividir_treino_teste(X, y, tamanho_teste=0.2, random_state=42):
     #           X, y, test_size=tamanho_teste, random_state=random_state
     #       )
     
-    X_train, X_test, y_train, y_test = None, None, None, None  # Substitua pelo código
-    
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=tamanho_teste, random_state=random_state
+    )    
     
     # Mostrar tamanhos
     if X_train is not None:
@@ -67,7 +84,7 @@ def dividir_treino_teste(X, y, tamanho_teste=0.2, random_state=42):
 
 def treinar_modelo(X_train, y_train):
     """
-    Treina um RandomForestClassifier.
+    Criar e treina um RandomForestClassifier.
     
     Args:
         X_train: features de treino
@@ -77,24 +94,31 @@ def treinar_modelo(X_train, y_train):
         Modelo treinado
     """
     
-    print("Treinando modelo...")
+    print("Criando e Treinando modelo...")
     
     # TODO 4: Crie e treine o modelo RandomForestClassifier
     # Passo 1: Criar o modelo
     # Dica: modelo = RandomForestClassifier(n_estimators=100, random_state=42)
     
-    modelo = None  # Substitua None pelo código correto
-    
+    modelo = RandomForestClassifier(
+    n_estimators=100,  # número de árvores de decisão no ensemble
+    random_state=42,   # semente para reprodutibilidade (sempre mesmo resultado)
+    max_depth=10       # profundidade máxima de cada árvore (evita overfitting)
+                                )
+    print(modelo) # imprime os parâmetros configurados do modelo
+    print()
     
     # Passo 2: Treinar o modelo (se foi criado)
     # Dica: modelo.fit(X_train, y_train)
     
     if modelo is not None:
-        # TODO 5: Treine o modelo usando .fit()
-        pass  # Substitua pass pelo código correto
+    # TODO 5: Treine o modelo usando .fit()
+        inicio = time.time() # time.time() = retorna timestamp atual em segundos
+        modelo.fit(X_train, y_train) # fit() = treina o modelo usando X (features) e y (target)
+        fim = time.time()
+        print(f"✅ Treinamento concluído em {fim - inicio:.2f} segundos!") # calcula tempo decorrido e formata com 2 casas decimais
+        print()
     
-    
-    print("✅ Modelo treinado!")
     return modelo
 
 
